@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_milk">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarDetail"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/bg_milk"
+        app:title="Платье"
+        app:titleCentered="true"
+        app:titleTextColor="@color/brand_rose"
+        app:navigationIcon="@drawable/ic_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- ОДНА карточка: фото (свайп) + вся инфа + заметки -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardAll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="18dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@color/card_white"
+        app:layout_constraintTop_toBottomOf="@id/toolbarDetail"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="14dp">
+
+                <!-- SWIPE IMAGES -->
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/pagerImages"
+                    android:layout_width="0dp"
+                    android:layout_height="360dp"
+                    android:clipToPadding="false"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- dots (под фото) -->
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabDots"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabRippleColor="@android:color/transparent"
+                    app:tabBackground="@android:color/transparent"
+                    app:tabTextColor="@android:color/transparent"
+                    app:layout_constraintTop_toBottomOf="@id/pagerImages"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Favorite on top of photos -->
+                <ImageButton
+                    android:id="@+id/btnFavDetail"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:layout_margin="10dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Избранное"
+                    android:src="@drawable/ic_favorite_border"
+                    android:elevation="8dp"
+                    android:translationZ="8dp"
+                    app:tint="@color/icon_rose"
+                    app:layout_constraintTop_toTopOf="@id/pagerImages"
+                    app:layout_constraintEnd_toEndOf="@id/pagerImages" />
+
+                <!-- Title -->
+                <TextView
+                    android:id="@+id/tvTitleDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:maxLines="3"
+                    android:text="Название платья"
+                    android:textColor="@color/text_main"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/tabDots"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Price -->
+                <TextView
+                    android:id="@+id/tvPriceDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="58 000 сом"
+                    android:textColor="@color/brand_rose"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/tvTitleDetail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Артикул -->
+                <TextView
+                    android:id="@+id/tvSkuDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Артикул: ..."
+                    android:textColor="@color/text_muted"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvPriceDetail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- divider -->
+                <View
+                    android:id="@+id/div1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/divider_soft"
+                    app:layout_constraintTop_toBottomOf="@id/tvSkuDetail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Color -->
+                <TextView
+                    android:id="@+id/tvColorDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Цвет: ..."
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@id/div1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvSilhouetteDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Силуэт: ..."
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvColorDetail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvMaterialsDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Материалы: ..."
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvSilhouetteDetail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvFeaturesDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Особенности: ..."
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvMaterialsDetail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvStyleDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Стиль: ..."
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvFeaturesDetail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Notes title -->
+                <TextView
+                    android:id="@+id/tvNotesTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Мои заметки"
+                    android:textColor="@color/brand_rose_dark"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/tvStyleDetail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilNote"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/divider_soft"
+                    app:boxCornerRadiusTopStart="14dp"
+                    app:boxCornerRadiusTopEnd="14dp"
+                    app:boxCornerRadiusBottomStart="14dp"
+                    app:boxCornerRadiusBottomEnd="14dp"
+                    app:layout_constraintTop_toBottomOf="@id/tvNotesTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etNote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Например: примерить в субботу, нравится цвет…"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSaveNote"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Сохранить заметку"
+                    app:cornerRadius="14dp"
+                    app:backgroundTint="@color/brand_rose"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintTop_toBottomOf="@id/tilNote"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

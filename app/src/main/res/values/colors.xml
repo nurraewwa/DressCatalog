@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <!-- ===== BACKGROUND / CARDS ===== -->
+    <!-- Нежный молочный фон -->
+    <color name="bg_milk">#FAF7F4</color>
+    <!-- Белые карточки -->
+    <color name="card_white">#FFFFFF</color>
+    <!-- Мягкий разделитель -->
+    <color name="divider_soft">#E9E1DE</color>
+
+    <!-- ===== BRAND (KOINOC) ===== -->
+    <!-- Основной фирменный розовый (для KOINOC, избранного, акцентов) -->
+    <color name="brand_rose">#C97A8A</color>
+    <!-- Темнее (для выделения) -->
+    <color name="brand_rose_dark">#B86879</color>
+
+    <!-- Оставляем твой акцент, чтобы ничего не сломалось -->
+    <color name="accent_rose">#C9A2A6</color>
+    <color name="accent_lavender">#B9B3D9</color>
+
+    <!-- ===== TEXT ===== -->
+    <color name="text_main">#2E2E2E</color>
+    <color name="text_muted">#6B6B6B</color>
+
+    <!-- Текст на выбранном чипе -->
+    <color name="text_on_chip">#2E2E2E</color>
+    <color name="text_on_chip_selected">#2E2E2E</color>
+
+    <!-- ===== CHIPS ===== -->
+    <!-- Фон чипа обычный -->
+    <color name="chip_bg">#F1E7E5</color>
+    <!-- Фон выбранного чипа (чуть темнее) -->
+    <color name="chip_selected_bg">#E4C9CC</color>
+
+    <!-- ===== ICONS ===== -->
+    <!-- Цвет иконок (избранное/кнопки) -->
+    <color name="icon_rose">#C97A8A</color>
+
+
 </resources>

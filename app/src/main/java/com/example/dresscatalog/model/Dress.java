@@ -1,19 +1,33 @@
 package com.example.dresscatalog.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Dress {
+public class Dress implements Serializable {
 
-    public String id;
-    public String name;
-    public String category;
-    public int price;
-    public String color;
-    public List<String> sizes;
-    public String fabric;
-    public String style;
-    public String length;
-    public String sleeves;
-    public boolean availability;
+    public int id;
 
+    // Для фильтрации (НЕ показываем в UI)
+    public String category; // wedding / evening
+
+    // Основное
+    public String title;
+    public String sku;          // Артикул
+    public int priceSom;        // Цена в сомах
+    public String currency;     // KGS
+
+    // Описание
+    public String color;        // строка (например: "красный, синий")
+    public String silhouette;
+
+    public List<String> materials;
+    public List<String> features;
+    public List<String> style;
+
+    // Изображения
+    public String imageUrl;         // может быть null
+    public List<String> imageUrls;  // для свайпа фото
+
+    // Источник (необязательно использовать)
+    public String sourceUrl;
 }
