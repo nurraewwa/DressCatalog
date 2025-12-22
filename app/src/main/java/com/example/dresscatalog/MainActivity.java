@@ -1,23 +1,22 @@
 package com.example.dresscatalog;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.example.dresscatalog.db.FavoritesStore;
 import com.example.dresscatalog.model.Dress;
@@ -36,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class  MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "DressApi";
 
@@ -53,7 +52,7 @@ public class  MainActivity extends AppCompatActivity {
     // Filters
     private String categoryFilter = "all"; // all / wedding / evening
     private String currentQuery = "";
-    private boolean showOnlyFavorites = false;
+    private boolean showOnlyFavorites = false; // если вдруг вернёшь режим "только избранное"
 
     // Sort
     private enum SortMode { NONE, PRICE_ASC, PRICE_DESC, TITLE }
@@ -65,7 +64,7 @@ public class  MainActivity extends AppCompatActivity {
 
     private MenuItem favoritesMenuItem;
 
-    private ActivityResultLauncher<android.content.Intent> detailLauncher;
+    private ActivityResultLauncher<Intent> detailLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,32 +84,28 @@ public class  MainActivity extends AppCompatActivity {
         favoritesStore = new FavoritesStore(this);
         favoriteIds = favoritesStore.getAllFavoriteIds();
 
+        // Detail launcher (чтобы после деталей обновить иконки избранного)
+        detailLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    refreshFavoritesFromDb();
+                    applyFiltersAndSort();
+                }
+        );
+
         // Adapter
         adapter = new DressAdapter(
                 dress -> {
-                    android.content.Intent i = new android.content.Intent(this, DressDetailActivity.class);
+                    Intent i = new Intent(this, DressDetailActivity.class);
                     i.putExtra(DressDetailActivity.EXTRA_DRESS, dress);
                     detailLauncher.launch(i);
                 },
                 dress -> {
                     favoritesStore.toggle(dress.id);
-                    favoriteIds = favoritesStore.getAllFavoriteIds();
-                    adapter.setFavoriteIds(favoriteIds);
+                    refreshFavoritesFromDb();
                     applyFiltersAndSort();
                 }
         );
-
-
-        detailLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    // Когда вернулись из деталей — обновим избранное и перерисуем список
-                    favoriteIds = favoritesStore.getAllFavoriteIds();
-                    adapter.setFavoriteIds(favoriteIds);
-                    applyFiltersAndSort();
-                }
-        );
-
 
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setHasFixedSize(true);
@@ -128,7 +123,6 @@ public class  MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // на будущее (после DetailActivity) — чтобы иконки обновлялись
         refreshFavoritesFromDb();
         applyFiltersAndSort();
     }
@@ -136,7 +130,6 @@ public class  MainActivity extends AppCompatActivity {
     private void refreshFavoritesFromDb() {
         favoriteIds = favoritesStore.getAllFavoriteIds();
         adapter.setFavoriteIds(favoriteIds);
-        // если меню уже создано — иконка тоже должна быть актуальной
         updateFavoritesIcon();
     }
 
@@ -179,7 +172,6 @@ public class  MainActivity extends AppCompatActivity {
 
                 setState("", false);
 
-                // вдруг в БД уже есть избранные — сразу обновим
                 refreshFavoritesFromDb();
                 applyFiltersAndSort();
             }
@@ -203,7 +195,7 @@ public class  MainActivity extends AppCompatActivity {
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView sv = (SearchView) searchItem.getActionView();
-        sv.setQueryHint("Поиск по названию / SKU / цвету");
+        sv.setQueryHint("Поиск по названию / артикулу / цвету");
 
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override public boolean onQueryTextSubmit(String s) { return true; }
@@ -239,7 +231,6 @@ public class  MainActivity extends AppCompatActivity {
             return true;
         }
 
-
         if (id == R.id.action_sort) {
             showSortDialog();
             return true;
@@ -250,6 +241,8 @@ public class  MainActivity extends AppCompatActivity {
 
     private void updateFavoritesIcon() {
         if (favoritesMenuItem == null) return;
+
+        // если ты НЕ используешь showOnlyFavorites — можно всегда показывать обычное сердечко
         favoritesMenuItem.setIcon(showOnlyFavorites
                 ? R.drawable.ic_favorite
                 : R.drawable.ic_favorite_border);
@@ -263,12 +256,13 @@ public class  MainActivity extends AppCompatActivity {
                 "По названию (А-Я)"
         };
 
-        int checked = 0;
+        int checked;
         switch (sortMode) {
-            case NONE: checked = 0; break;
             case PRICE_ASC: checked = 1; break;
             case PRICE_DESC: checked = 2; break;
             case TITLE: checked = 3; break;
+            case NONE:
+            default: checked = 0; break;
         }
 
         new AlertDialog.Builder(this)
@@ -291,13 +285,13 @@ public class  MainActivity extends AppCompatActivity {
         currentList.addAll(fullList);
 
         // 1) category
-        if (!"all".equals(categoryFilter)) {
+        if (!"all".equalsIgnoreCase(categoryFilter)) {
             currentList.removeIf(d ->
                     d.category == null || !d.category.equalsIgnoreCase(categoryFilter)
             );
         }
 
-        // 2) favorites
+        // 2) favorites (если когда-то включишь showOnlyFavorites)
         if (showOnlyFavorites) {
             currentList.removeIf(d -> favoriteIds == null || !favoriteIds.contains(d.id));
         }

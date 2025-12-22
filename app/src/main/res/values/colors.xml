@@ -24,8 +24,8 @@
     <color name="text_muted">#6B6B6B</color>
 
     <!-- Текст на выбранном чипе -->
-    <color name="text_on_chip">#2E2E2E</color>
-    <color name="text_on_chip_selected">#2E2E2E</color>
+    <color name="chip_bg_checked">#E9D5DB</color>
+    <color name="text_on_chip">#8A4B5A</color>
 
     <!-- ===== CHIPS ===== -->
     <!-- Фон чипа обычный -->
@@ -36,6 +36,25 @@
     <!-- ===== ICONS ===== -->
     <!-- Цвет иконок (избранное/кнопки) -->
     <color name="icon_rose">#C97A8A</color>
+
+
+    <!-- Основной розовый -->
+    <color name="primary_brand">#D4F45FF1</color>
+
+    <!-- Chip: выбран (нежно-розовый) -->
+    <color name="chip_bg_checked_color">#F8BBD0</color>
+
+    <!-- Chip: не выбран (светло-серый с розовым оттенком) -->
+    <color name="chip_bg_default_color">#F5F5F5</color>
+
+    <!-- Текст выбранного Chip -->
+    <color name="chip_text_checked_color">#560461</color>
+
+    <color name="chip_text_default_color">#6B6B6B</color>
+
+
+
+
 
 
 </resources>

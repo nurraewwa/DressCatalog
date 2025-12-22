@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Стиль чипов KOINOC -->
+    <style name="ChipKoinoc" parent="Widget.Material3.Chip.Assist">
+        <item name="shapeAppearanceOverlay">@style/KoinocChipShape</item>
+
+        <item name="chipMinHeight">40dp</item>
+        <item name="android:textStyle">bold</item>
+
+        <item name="chipBackgroundColor">@color/chip_bg_selector</item>
+        <item name="android:textColor">@color/chip_text_selector</item>
+
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="rippleColor">@android:color/transparent</item>
+    </style>
+
+    <!-- ВАЖНО: никакого parent тут не ставим -->
+    <style name="KoinocChipShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+</resources>
