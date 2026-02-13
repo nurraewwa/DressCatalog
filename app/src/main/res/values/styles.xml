@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Заголовок KOINOC: слева, тонкий чёрный контур -->
+    <style name="TitleKoinoc" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@color/brand_rose</item>
+        <item name="android:shadowColor">#CC000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:shadowRadius">1.5</item>
+    </style>
+
     <!-- Стиль чипов KOINOC -->
     <style name="ChipKoinoc" parent="Widget.Material3.Chip.Assist">
         <item name="shapeAppearanceOverlay">@style/KoinocChipShape</item>

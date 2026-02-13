@@ -39,7 +39,7 @@ public class DressAdapter extends RecyclerView.Adapter<DressAdapter.DressViewHol
         this.favoriteClickListener = favoriteClickListener;
     }
 
-    // ===== data =====
+
     public void submitList(List<Dress> list) {
         dresses.clear();
         if (list != null) dresses.addAll(list);
@@ -51,7 +51,7 @@ public class DressAdapter extends RecyclerView.Adapter<DressAdapter.DressViewHol
         notifyDataSetChanged();
     }
 
-    // ===== RecyclerView =====
+
     @NonNull
     @Override
     public DressViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -64,11 +64,11 @@ public class DressAdapter extends RecyclerView.Adapter<DressAdapter.DressViewHol
     public void onBindViewHolder(@NonNull DressViewHolder h, int position) {
         Dress d = dresses.get(position);
 
-        // title + article
+
         h.tvTitle.setText(safe(d.title));
         h.tvSku.setText("Артикул: " + safe(d.sku));
 
-        // meta: color • style
+
         String color = safe(d.color);
         String style = join(d.style);
 
@@ -79,18 +79,18 @@ public class DressAdapter extends RecyclerView.Adapter<DressAdapter.DressViewHol
 
         h.tvMeta.setText(meta);
 
-        // price
+
         h.tvPrice.setText(MoneyUtils.formatSom(d.priceSom));
 
-        // image: берем первое из imageUrls, иначе imageUrl
+
         String previewUrl = pickPreviewUrl(d);
         loadDressImage(h.img, previewUrl);
 
-        // favorite icon
+
         boolean isFav = favoriteIds != null && favoriteIds.contains(d.id);
         h.btnFav.setImageResource(isFav ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
 
-        // clicks
+
         h.btnFav.setOnClickListener(v -> {
             if (favoriteClickListener != null) favoriteClickListener.onFavoriteClick(d);
         });
@@ -105,7 +105,7 @@ public class DressAdapter extends RecyclerView.Adapter<DressAdapter.DressViewHol
         return dresses.size();
     }
 
-    // ===== ViewHolder =====
+
     static class DressViewHolder extends RecyclerView.ViewHolder {
 
         ImageView img;
@@ -123,22 +123,22 @@ public class DressAdapter extends RecyclerView.Adapter<DressAdapter.DressViewHol
         }
     }
 
-    // ===== preview url =====
+
     private static String pickPreviewUrl(Dress d) {
         if (d == null) return "";
-        // 1) imageUrls[0]
+
         if (d.imageUrls != null && !d.imageUrls.isEmpty()) {
             String u0 = safe(d.imageUrls.get(0));
             if (isHttp(u0)) return u0;
         }
-        // 2) imageUrl
+
         String one = safe(d.imageUrl);
         if (isHttp(one)) return one;
 
         return "";
     }
 
-    // ===== image helper =====
+
     private void loadDressImage(ImageView iv, String imageUrl) {
         String url = safe(imageUrl);
 
@@ -147,14 +147,14 @@ public class DressAdapter extends RecyclerView.Adapter<DressAdapter.DressViewHol
                     .load(url)
                     .placeholder(R.drawable.ic_image_placeholder)
                     .error(R.drawable.ic_image_placeholder)
-                    .fitCenter() // чтобы платье было "целее"
+                    .centerCrop()
                     .into(iv);
         } else {
             iv.setImageResource(R.drawable.ic_image_placeholder);
         }
     }
 
-    // ===== helpers =====
+
     private static String safe(String s) {
         return s == null ? "" : s.trim();
     }

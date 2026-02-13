@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:padding="12dp">
 
-        <!-- Фото платья -->
+
+        <!-- Карточка для изображения -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardImage"
             android:layout_width="96dp"
@@ -29,17 +30,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
 
+            <!-- Фото платья -->
             <ImageView
                 android:id="@+id/img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/bg_milk"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_image_placeholder"
                 android:contentDescription="Фото платья"/>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Кнопка избранного -->
+
         <ImageButton
             android:id="@+id/btnFav"
             android:layout_width="40dp"
@@ -47,11 +49,11 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="В избранное"
             android:src="@drawable/ic_favorite_border"
-            app:tint="@color/icon_rose"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Название -->
+
+        <!-- Название платья -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
@@ -68,7 +70,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginEnd="8dp"/>
 
-        <!-- Артикул -->
+
         <TextView
             android:id="@+id/tvSku"
             android:layout_width="0dp"
@@ -81,7 +83,7 @@
             app:layout_constraintEnd_toEndOf="@id/tvTitle"
             android:layout_marginTop="4dp"/>
 
-        <!-- Цвет + стиль -->
+        <!-- Дополнительная информация (цвет, стиль) -->
         <TextView
             android:id="@+id/tvMeta"
             android:layout_width="0dp"
@@ -96,7 +98,7 @@
             app:layout_constraintEnd_toEndOf="@id/tvTitle"
             android:layout_marginTop="4dp"/>
 
-        <!-- Цена -->
+
         <TextView
             android:id="@+id/tvPrice"
             android:layout_width="0dp"

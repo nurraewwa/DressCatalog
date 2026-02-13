@@ -52,7 +52,7 @@ public class ImagePagerAdapter extends RecyclerView.Adapter<ImagePagerAdapter.VH
                 .load(url)
                 .placeholder(R.drawable.ic_image_placeholder)
                 .error(R.drawable.ic_image_placeholder)
-                .fitCenter()
+                .centerCrop()
                 .into(h.img);
 
         h.itemView.setOnClickListener(v -> {

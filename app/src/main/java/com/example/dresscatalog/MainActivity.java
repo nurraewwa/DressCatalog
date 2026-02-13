@@ -39,31 +39,25 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "DressApi";
 
-    // UI
     private RecyclerView recycler;
     private TextView tvState;
     private ChipGroup chipGroup;
     private DressAdapter adapter;
 
-    // Data
     private final List<Dress> fullList = new ArrayList<>();
     private final List<Dress> currentList = new ArrayList<>();
 
-    // Filters
-    private String categoryFilter = "all"; // all / wedding / evening
+    private String categoryFilter = "all";
     private String currentQuery = "";
-    private boolean showOnlyFavorites = false; // если вдруг вернёшь режим "только избранное"
+    private boolean showOnlyFavorites = false;
 
-    // Sort
     private enum SortMode { NONE, PRICE_ASC, PRICE_DESC, TITLE }
     private SortMode sortMode = SortMode.NONE;
 
-    // Favorites (SQLite)
     private FavoritesStore favoritesStore;
     private Set<Integer> favoriteIds;
 
     private MenuItem favoritesMenuItem;
-
     private ActivityResultLauncher<Intent> detailLauncher;
 
     @Override
@@ -71,20 +65,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Toolbar
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Views
         recycler = findViewById(R.id.recycler);
         tvState = findViewById(R.id.tvState);
         chipGroup = findViewById(R.id.chipGroup);
 
-        // Favorites store
         favoritesStore = new FavoritesStore(this);
         favoriteIds = favoritesStore.getAllFavoriteIds();
 
-        // Detail launcher (чтобы после деталей обновить иконки избранного)
         detailLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -93,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-        // Adapter
         adapter = new DressAdapter(
                 dress -> {
                     Intent i = new Intent(this, DressDetailActivity.class);
@@ -113,10 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.setFavoriteIds(favoriteIds);
 
-        // Chips
         setupChips();
-
-        // Load
         loadDresses();
     }
 
@@ -184,8 +170,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // -------------------- MENU --------------------
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -241,11 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateFavoritesIcon() {
         if (favoritesMenuItem == null) return;
-
-        // если ты НЕ используешь showOnlyFavorites — можно всегда показывать обычное сердечко
-        favoritesMenuItem.setIcon(showOnlyFavorites
-                ? R.drawable.ic_favorite
-                : R.drawable.ic_favorite_border);
+        favoritesMenuItem.setIcon(R.drawable.ic_favorite_menu);
     }
 
     private void showSortDialog() {
@@ -278,25 +258,20 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    // -------------------- FILTER + SORT --------------------
-
     private void applyFiltersAndSort() {
         currentList.clear();
         currentList.addAll(fullList);
 
-        // 1) category
         if (!"all".equalsIgnoreCase(categoryFilter)) {
             currentList.removeIf(d ->
                     d.category == null || !d.category.equalsIgnoreCase(categoryFilter)
             );
         }
 
-        // 2) favorites (если когда-то включишь showOnlyFavorites)
         if (showOnlyFavorites) {
             currentList.removeIf(d -> favoriteIds == null || !favoriteIds.contains(d.id));
         }
 
-        // 3) search: title / sku / color
         if (!TextUtils.isEmpty(currentQuery)) {
             String q = currentQuery.toLowerCase().trim();
             currentList.removeIf(d -> {
@@ -307,7 +282,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        // 4) sort
         switch (sortMode) {
             case PRICE_ASC:
                 Collections.sort(currentList, Comparator.comparingInt(o -> o.priceSom));
@@ -316,7 +290,8 @@ public class MainActivity extends AppCompatActivity {
                 Collections.sort(currentList, (a, b) -> Integer.compare(b.priceSom, a.priceSom));
                 break;
             case TITLE:
-                Collections.sort(currentList, (a, b) -> safe(a.title).compareToIgnoreCase(safe(b.title)));
+                Collections.sort(currentList, (a, b) ->
+                        safe(a.title).compareToIgnoreCase(safe(b.title)));
                 break;
             case NONE:
             default:

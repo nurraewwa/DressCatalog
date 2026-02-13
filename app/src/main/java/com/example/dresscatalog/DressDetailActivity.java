@@ -13,8 +13,6 @@ import com.example.dresscatalog.db.FavoritesStore;
 import com.example.dresscatalog.model.Dress;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -28,12 +26,10 @@ public class DressDetailActivity extends AppCompatActivity {
     private FavoritesStore favoritesStore;
     private Dress dress;
 
-    // UI
     private ImageButton btnFav;
     private TextInputEditText etNote;
 
     private ViewPager2 pagerImages;
-    private TabLayout tabDots;
     private ImagePagerAdapter imageAdapter;
 
     private boolean changed = false;
@@ -45,7 +41,6 @@ public class DressDetailActivity extends AppCompatActivity {
 
         favoritesStore = new FavoritesStore(this);
 
-        // Toolbar back
         MaterialToolbar toolbar = findViewById(R.id.toolbarDetail);
         toolbar.setNavigationOnClickListener(v -> finish());
 
@@ -62,16 +57,11 @@ public class DressDetailActivity extends AppCompatActivity {
     }
 
     private void bindViews() {
-        // pager + dots
+        // pager (свайп фото)
         pagerImages = findViewById(R.id.pagerImages);
-        tabDots = findViewById(R.id.tabDots);
 
         imageAdapter = new ImagePagerAdapter(position -> openFullscreen(position));
         pagerImages.setAdapter(imageAdapter);
-
-        new TabLayoutMediator(tabDots, pagerImages, (tab, position) -> {
-            // точки
-        }).attach();
 
         // texts
         TextView tvTitle = findViewById(R.id.tvTitleDetail);
@@ -89,7 +79,6 @@ public class DressDetailActivity extends AppCompatActivity {
         etNote = findViewById(R.id.etNote);
         MaterialButton btnSaveNote = findViewById(R.id.btnSaveNote);
 
-        // --- Text bind ---
         tvTitle.setText(safe(dress.title));
         tvPrice.setText(MoneyUtils.formatSom(dress.priceSom));
 
@@ -100,16 +89,13 @@ public class DressDetailActivity extends AppCompatActivity {
         tvFeatures.setText("Особенности: " + joinOrDash(dress.features));
         tvStyle.setText("Стиль: " + joinOrDash(dress.style));
 
-        // --- Notes load ---
         String savedNote = favoritesStore.getNote(dress.id);
         if (savedNote != null) etNote.setText(savedNote);
 
-        // --- Save note ---
         btnSaveNote.setOnClickListener(v -> saveNote());
     }
 
     private void bindDressData() {
-        // 1) список фото: imageUrls -> если пусто, пробуем imageUrl
         List<String> urls = dress.imageUrls;
 
         if (urls == null || urls.isEmpty()) {
@@ -123,16 +109,14 @@ public class DressDetailActivity extends AppCompatActivity {
 
         imageAdapter.submit(urls);
 
-        // 2) избранное
         updateFavIcon();
     }
 
     private void setupActions() {
-        // Favorite toggle
         btnFav.setOnClickListener(v -> {
             favoritesStore.toggle(dress.id);
             updateFavIcon();
-            changed = true; // важно для обновления списка после возврата
+            changed = true;
         });
     }
 
@@ -172,7 +156,6 @@ public class DressDetailActivity extends AppCompatActivity {
         super.finish();
     }
 
-    // --- helpers ---
     private static String safe(String s) {
         return s == null ? "" : s.trim();
     }
