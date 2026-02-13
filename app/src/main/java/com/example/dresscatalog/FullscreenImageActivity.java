@@ -7,10 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
-
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class FullscreenImageActivity extends AppCompatActivity {
 
@@ -26,16 +25,17 @@ public class FullscreenImageActivity extends AppCompatActivity {
         int pos = getIntent().getIntExtra(EXTRA_POS, 0);
 
         ViewPager2 pager = findViewById(R.id.pagerFullscreen);
-        TabLayout dots = findViewById(R.id.dotsFullscreen);
         ImageButton btnClose = findViewById(R.id.btnClose);
+
+        List<String> safeUrls = urls != null ? urls : Collections.emptyList();
 
         ImagePagerAdapter adapter = new ImagePagerAdapter(position -> {});
         pager.setAdapter(adapter);
-        adapter.submit(urls);
+        adapter.submit(safeUrls);
 
-        new TabLayoutMediator(dots, pager, (tab, position) -> {}).attach();
-
-        if (pos >= 0) pager.setCurrentItem(pos, false);
+        if (pos >= 0 && pos < safeUrls.size()) {
+            pager.setCurrentItem(pos, false);
+        }
 
         btnClose.setOnClickListener(v -> finish());
     }

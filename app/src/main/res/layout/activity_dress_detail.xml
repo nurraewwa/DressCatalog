@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
+<!-- Главный экран приложения -->
+<!-- Отображает список платьев + фильтрацию по категориям -->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -48,28 +52,15 @@
                     android:id="@+id/pagerImages"
                     android:layout_width="0dp"
                     android:layout_height="360dp"
+                    android:background="@drawable/bg_pager_rounded"
                     android:clipToPadding="false"
+                    android:clipChildren="true"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
-                <!-- dots (под фото) -->
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabDots"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabRippleColor="@android:color/transparent"
-                    app:tabBackground="@android:color/transparent"
-                    app:tabTextColor="@android:color/transparent"
-                    app:layout_constraintTop_toBottomOf="@id/pagerImages"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- Favorite on top of photos -->
                 <ImageButton
                     android:id="@+id/btnFavDetail"
                     android:layout_width="46dp"
@@ -80,11 +71,9 @@
                     android:src="@drawable/ic_favorite_border"
                     android:elevation="8dp"
                     android:translationZ="8dp"
-                    app:tint="@color/icon_rose"
                     app:layout_constraintTop_toTopOf="@id/pagerImages"
                     app:layout_constraintEnd_toEndOf="@id/pagerImages" />
 
-                <!-- Title -->
                 <TextView
                     android:id="@+id/tvTitleDetail"
                     android:layout_width="0dp"
@@ -95,11 +84,10 @@
                     android:textColor="@color/text_main"
                     android:textSize="19sp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/tabDots"
+                    app:layout_constraintTop_toBottomOf="@id/pagerImages"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
-                <!-- Price -->
                 <TextView
                     android:id="@+id/tvPriceDetail"
                     android:layout_width="0dp"
@@ -113,7 +101,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
-                <!-- Артикул -->
                 <TextView
                     android:id="@+id/tvSkuDetail"
                     android:layout_width="0dp"
@@ -126,7 +113,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
-                <!-- divider -->
                 <View
                     android:id="@+id/div1"
                     android:layout_width="0dp"
@@ -137,7 +123,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
-                <!-- Color -->
                 <TextView
                     android:id="@+id/tvColorDetail"
                     android:layout_width="0dp"
@@ -198,7 +183,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
-                <!-- Notes title -->
                 <TextView
                     android:id="@+id/tvNotesTitle"
                     android:layout_width="0dp"

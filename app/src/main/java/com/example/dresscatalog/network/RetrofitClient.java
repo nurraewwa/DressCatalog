@@ -1,4 +1,4 @@
-package com.example.dresscatalog.network; // свой пакет
+package com.example.dresscatalog.network;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-    // ⚠️ Важно: обязательно слэш в конце
+
     private static final String BASE_URL =
             "https://768d857c-d898-40cd-8af3-a4cd0c096f1a.mock.pstmn.io/";
 
@@ -16,7 +16,7 @@ public class RetrofitClient {
     public static Retrofit getInstance() {
         if (retrofit == null) {
 
-            // Логгер запросов/ответов (очень удобно)
+
             HttpLoggingInterceptor logger = new HttpLoggingInterceptor();
             logger.setLevel(HttpLoggingInterceptor.Level.BODY);
 

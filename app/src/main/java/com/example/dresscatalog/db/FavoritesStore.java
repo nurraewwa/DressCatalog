@@ -16,7 +16,7 @@ public class FavoritesStore {
         helper = new FavoritesDbHelper(context.getApplicationContext());
     }
 
-    // --- Favorites ---
+
 
     public boolean isFavorite(int dressId) {
         SQLiteDatabase db = helper.getReadableDatabase();
@@ -39,7 +39,7 @@ public class FavoritesStore {
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(FavoritesDbHelper.COL_DRESS_ID, dressId);
-        // note не трогаем
+
         db.insertWithOnConflict(
                 FavoritesDbHelper.TABLE,
                 null,
@@ -74,11 +74,8 @@ public class FavoritesStore {
         return set;
     }
 
-    // --- Notes ---
 
-    /**
-     * Возвращает заметку для платья, если есть. Если нет — null.
-     */
+
     public String getNote(int dressId) {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor c = db.rawQuery(
@@ -96,12 +93,10 @@ public class FavoritesStore {
         return note;
     }
 
-    /**
-     * Сохраняет заметку. Если платье не в избранном — добавит в избранное.
-     * note может быть пустой строкой или null.
-     */
+
+
     public void saveNote(int dressId, String note) {
-        // гарантируем, что запись существует
+
         add(dressId);
 
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -116,9 +111,7 @@ public class FavoritesStore {
         );
     }
 
-    /**
-     * Удаляет заметку (ставит NULL).
-     */
+
     public void clearNote(int dressId) {
         saveNote(dressId, null);
     }

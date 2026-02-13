@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class FavoritesDbHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "dress_catalog.db";
-    public static final int DB_VERSION = 2; // было 1 → стало 2
+    public static final int DB_VERSION = 2;
 
     public static final String TABLE = "favorites";
     public static final String COL_DRESS_ID = "dress_id";
@@ -30,7 +30,7 @@ public class FavoritesDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        // Миграция v1 -> v2: добавляем колонку note
+
         if (oldVersion < 2) {
             db.execSQL("ALTER TABLE " + TABLE + " ADD COLUMN " + COL_NOTE + " TEXT");
         }
